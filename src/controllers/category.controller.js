@@ -68,7 +68,6 @@ export const updatePatchCategory = async (req, res, next) => {
 export const deleteCategory = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const category = await Category.findByIdAndDelete(id);
     if (!category) throw new Error('Id is invalid');
     return successData(res, category);
