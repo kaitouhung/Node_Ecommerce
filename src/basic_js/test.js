@@ -56,11 +56,11 @@
 //------------------------ES6-----------------------------------------------------------------
 
 //rest params
-// const print =(...numbers)=>{
-//     numbers.forEach((x)=>console.log(x))
-// }
+// const print = (...numbers) => {
+//   numbers.forEach((x) => console.log(x));
+// };
 
-// print(233,222,333,11)
+// print(233, 222, 333, 11);
 
 //destructoring
 // let [a,b]=[1,2]
@@ -84,25 +84,33 @@ let students = [
 
 //Hàm find: trả về phần tử , findIndex: trả về chỉ mục, push, pop, shift, unshift
 
-// let infoUserFind = students.find((student)=>{
-//     return student.fullName === 'A'
-// })
+// let infoUserFind = students.find((student) => {
+//   return student.fullName === 'A';
+// });
 // console.log(infoUserFind);
 
-// let infoUserFindIndex = students.findIndex((student)=>{
-//     return student.fullName === 'A'
-// })
-// console.log({infoUserFindIndex});
+// let infoUserFindIndex = students.findIndex((student) => {
+//   return student.fullName === 'A';
+// });
+// console.log({ infoUserFindIndex });
 
 // students.push({fullName:'D',age:20})
 // console.log(students);
 
-//không làm ảnh hưởng tới mảng cũ: JSOIN.parse(JSON.stringify())
+//không làm ảnh hưởng tới mảng cũ: JSON.parse(JSON.stringify())
 // cạm bẫy object lồng nhau phải dùng JSON.parse
-// let map = JSON.parse(JSON.stringify(students)).map((student)=>{
+// const map = JSON.parse(JSON.stringify(students)).map((student)=>{
 //     student.age = 2019 - student.age;
 //     return student
 // })
+
+// const map = students.map((student) => {
+//   student.age = 2019 - student.age;
+//   return student;
+// });
+// console.log(map);
+// console.log(students);
+// console.log(map === students);
 
 // let map = [...students]
 // let map1 = map.map((student)=>{
@@ -157,8 +165,8 @@ let students = [
 // })
 // console.log(forEach);
 
-// for(index in  students){
-//     console.log(students[index]);
+// for (let index in students) {
+//   console.log(students[index]);
 // }
 
 //reduce
@@ -168,8 +176,10 @@ let students = [
 
 // console.log(total);
 
-// const arr = [1,2,3,4,5,]
-// let B =arr.join(' ');
+// const arr = [1, 2, 3, 4, 5];
+// let B = arr.join(' ');
+
+// console.log(B === '12345');
 // console.log(B);
 // console.log(arr);
 
@@ -180,18 +190,35 @@ let students = [
 
 // console.log(JSON.stringify(json));
 
-// const arr = [1,2,3,5,6,7];
-// const arr1 = [8,9]
+// const arr = [1, 2, 3, 5, 6, 7];
+// const arr1 = [8, 9];
+// console.log([...arr, ...arr1]);
 
 // console.log(arr.concat(arr1))
 
-// const arr = [1,3,5,0,1,9,15,11]
+// const a = {
+//   name: 'Hung',
+// };
 
-// arr.sort((a,b)=>{
-//   return b-a
-// })
+// const b = {
+//   name: 'Hieu',
+// };
 
-// console.log(arr)
+// console.log(a === b);
+
+// const arr = [1, 3, 5, 0, 1, 9, 15, 11];
+
+// const b = arr.map((x) => x * 2);
+
+// const b = arr.map((x) => x * 2);
+
+// const b = arr.sort((a, b) => {
+//   return a - b;
+// });
+
+// console.log(arr === b);
+
+// console.log(arr.includes(1));
 
 //-----------------------------STRING------------------------------------------
 
@@ -209,17 +236,16 @@ let str = ' mern stack 2410 ';
 //cộng chuỗi và chiều dài: str.concat(), str: + , str.length
 
 //phần tử thứ 2 của chuỗi: str[0]
-
-// let indexStr = str.indexOf('stacks');
+// let indexStr = str.indexOf('stack');
 // console.log(indexStr);
 
 // includes: trả về true or false
-// let includes = str.includes('stack')
+// let includes = str.includes('stacks');
 // console.log(includes);
 
 //trim: xóa khoảng trắng ở đầu hay cuối chuổi , replace
 // let trim = str.trim();
-// let replace = str.replace('mern','MERN');
+// let replace = str.replace('mern', 'MERN');
 // console.log(replace);
 
 //toUpperCase, tolowerCase
@@ -231,7 +257,7 @@ let str = ' mern stack 2410 ';
 // console.log(Split);
 
 //slice: cắt chuỗi: vị trí bắt đầu, vị trí kết thúc
-// let Slice =str.slice(5,11);
+// let Slice = str.slice(5, 11);
 // console.log(Slice);
 
 // let temp = 'mern stack mern 2410';
@@ -250,27 +276,7 @@ let str = ' mern stack 2410 ';
 //-----------JSON-------------------
 // Là định dạng dữ liệu (chuỗi ): thể hiện bằng các kiểu string, number, boolean, null, obj,
 // let a = {
-//   name:"Hung",
-//   age: 12
-// }
+//   name: 'Hung',
+//   age: 12,
+// };
 // console.log(typeof JSON.stringify(a));
-
-// const arr = [
-//   {
-//     id: 1,
-//     startTime: 180,
-//     endTime: 220
-//   },
-//   {
-//     id: 2,
-//     startTime: 0,
-//     endTime: 120
-//   },
-//   {
-//     id: 3,
-//     startTime: 110,
-//     endTime: 150
-//   }
-// ]
-
-// let result = [];
