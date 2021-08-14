@@ -21,23 +21,42 @@ export const uploadImageCloud = async (req, res, next) => {
   next();
 };
 
+// export const uploadImagesCloud = async (req, res, next) => {
+//   const image = await cloudinary.uploader.upload(req.files.image[0].path, {
+//     upload_preset: 'products',
+//     resource_type: 'auto', // jpeg, png
+//   });
+//   const images = await Promise.all(
+//     req.files.images.map(
+//       async (image) =>
+//         await cloudinary.uploader.upload(image.path, {
+//           upload_preset: 'products',
+//           resource_type: 'auto', // jpeg, png
+//         })
+//     )
+//   );
+//   const result = await Promise.all([image, images]);
+//   req.image = result[0];
+//   req.images = result[1];
+//   next();
+// };
+
 export const uploadImagesCloud = async (req, res, next) => {
   const image = await cloudinary.uploader.upload(req.files.image[0].path, {
     upload_preset: 'products',
     resource_type: 'auto', // jpeg, png
   });
   const images = await Promise.all(
-    req.files.images.map(
-      async (image) =>
-        await cloudinary.uploader.upload(image.path, {
-          upload_preset: 'products',
-          resource_type: 'auto', // jpeg, png
-        })
+    req.files.images.map((image) =>
+      cloudinary.uploader.upload(image.path, {
+        upload_preset: 'products',
+        resource_type: 'auto', // jpeg, png
+      })
     )
   );
-  const result = await Promise.all([image, images]);
-  req.image = result[0];
-  req.images = result[1];
+
+  req.image = image;
+  req.images = images;
   next();
 };
 
@@ -51,16 +70,13 @@ export const removeImage = async (req, res, next) => {
       typeId = req.params.id;
     }
     const userCloudinary = await Cloudinary.findOne({ userId: typeId });
-
     if (userCloudinary) {
-      const image = await cloudinary.uploader.destroy(
-        userCloudinary.public_id,
-        {
+      await Promise.all([
+        cloudinary.uploader.destroy(userCloudinary.public_id, {
           upload_preset: 'dev',
-        }
-      );
-      const imageDB = await Cloudinary.deleteOne({ userId: typeId });
-      await Promise.all([image], imageDB);
+        }),
+        Cloudinary.deleteOne({ userId: typeId }),
+      ]);
     }
     next();
   } catch (error) {
@@ -73,25 +89,23 @@ export const removeImages = async (req, res, next) => {
     const productCloudinary = await CloudinaryProduct.findOne({
       productId: req.params.id,
     });
-    console.log(productCloudinary);
-    const image = await cloudinary.uploader.destroy(
-      productCloudinary.image.public_id,
-      {
-        upload_preset: 'products',
-      }
-    );
-    const images = await Promise.all(
-      productCloudinary.images.map(
-        async (image) =>
-          await cloudinary.uploader.destroy(image.public_id, {
+
+    if (productCloudinary) {
+      await Promise.all([
+        cloudinary.uploader.destroy(productCloudinary.image.public_id, {
+          upload_preset: 'products',
+        }),
+        ...productCloudinary.images.map((image) =>
+          cloudinary.uploader.destroy(image.public_id, {
             upload_preset: 'products',
           })
-      )
-    );
-    const deleteDB = await CloudinaryProduct.deleteOne({
-      productId: req.params.id,
-    });
-    await Promise.all([image, images, deleteDB]);
+        ),
+        CloudinaryProduct.deleteOne({
+          productId: req.params.id,
+        }),
+      ]);
+    }
+
     next();
   } catch (error) {
     return errorServer(res, 'Cloudinary failed');

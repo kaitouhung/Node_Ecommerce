@@ -427,3 +427,40 @@
 // }
 
 // console.log(SoDaoNguoc(12345,54321))
+
+// test ----------------------------------
+function asyncThing(value) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(value), 5000);
+  });
+}
+
+function main() {
+  return Promise.all([1, 2, 3, 4].map((value) => asyncThing(value)));
+}
+
+main()
+  .then((values) => {
+    const result = values.map((value) => value * 2);
+    console.log(result);
+  })
+  .catch((err) => console.error(err));
+
+// async function main() {
+//   return [1, 2, 3, 4].map(async (value) => {
+//     const v = await asyncThing(value);
+//     return v * 2;
+//   });
+// }
+
+// function main() {
+//   return Promise.all(
+//     [1, 2, 3, 4].map((val) => {
+//       return asyncThing(val);
+//     })
+//   );
+// }
+
+// main()
+//   .then((v) => console.log(v))
+//   .catch((err) => console.error(err));
