@@ -1,11 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const config = require('./config/database');
 
 import indexRouter from '*/routers/index';
 
 mongoose
-  .connect('mongodb://localhost:27017/shop', {
+  .connect(config.mongoUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -34,7 +35,7 @@ app.use(cookieParser());
 // Router
 indexRouter(app);
 
-const port = 5000;
+const port = process.env.PORT || config.port;
 app.listen(port, () => {
   console.log(`App is running on port ${port}`);
 });
